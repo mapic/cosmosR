@@ -12,7 +12,7 @@
 #' @examples
 #' cosmosQuery(sql.what = "c.contact.eloquaId", sql.where = "c.contact.eloquaId != null")
 
-cosmosQuery <- function(sql = "", sql.what = "*", sql.where = "", max.items = 100, debug.auth = FALSE, debug.query = FALSE, content.response = FALSE) {
+cosmosQuery <- function(sql.full = "", sql.what = "*", sql.where = "", max.items = 100, debug.auth = FALSE, debug.query = FALSE, content.response = FALSE) {
 
     require(digest)
     require(base64enc)
@@ -34,7 +34,7 @@ cosmosQuery <- function(sql = "", sql.what = "*", sql.where = "", max.items = 10
     res.type <- "docs"
 
     # Create full query with function
-    full.query <- constructQuery(sql.what, sql.where, sql)
+    full.query <- constructQuery(sql.what, sql.where, sql.full)
 
     # Convert full query to JSON for HTTP POST
     json.query <- toJSON(list(query = full.query, parameters = list()))
