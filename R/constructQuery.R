@@ -8,13 +8,18 @@
 #' @examples
 #' constructQuery(sql.what = "c.contact.eloquaId", sql.where = "c.contact.eloquaId != null")
 
-constructQuery <- function(sql.what, sql.where) {
+constructQuery <- function(sql.what, sql.where, sql) {
 
     # Create the query using predicate if it exists
     if (sql.where == "") {
         full.query <- paste("SELECT", sql.what, "FROM c", sep = " ")
     } else {
         full.query <- paste("SELECT ", sql.what, " FROM c WHERE (", sql.where, ")", sep = "")
+    }
+
+    # If SQL expression is present, use instead
+    if (sql != "") {
+        full.query <- sql
     }
 
     # Return the query
