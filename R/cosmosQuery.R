@@ -1,5 +1,6 @@
 #' POST a full query to the REST API for Cosmos DB.
 #' 
+#' @param sql SQL String for for querying database. Defaults to empty.
 #' @param sql.what String for specifying what fields to retrieve. Typically called select condition. Defaults to *
 #' @param sql.where String for specifying what filter to use on data. Typically called search condition. Defaults to empty.
 #' @param debug.auth Logical value for getting verbose output of auth header being constructed. Defaults to false.
