@@ -12,7 +12,7 @@
 #' @examples
 #' cosmosQuery(sql.what = "c.contact.eloquaId", sql.where = "c.contact.eloquaId != null")
 
-cosmosQuery <- function(sql.full = "", sql.what = "*", sql.where = "", max.items = 100, debug.auth = FALSE, debug.query = FALSE, content.response = FALSE) {
+cosmosQuery <- function(sql.full = "", sql.what = "*", sql.where = "", max.items = 100, debug.auth = FALSE, debug.query = FALSE, content.response = TRUE) {
 
     require(digest)
     require(base64enc)
