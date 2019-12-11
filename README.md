@@ -34,10 +34,10 @@ library(cosmosR)
 cosmosAuth("accessKey", "uri", "databaseName", "collectionName")
 
 # example query
-sql.full = "SELECT * FROM c"
+sql.full <- "SELECT * FROM c"
 
 # example query: note that with more complicated queries, SELECT * is not allowed, so use SELECT c
-sql.full = 'SELECT c FROM c JOIN samples IN c.samples JOIN tests IN samples.tests WHERE tests.parameter.code = "10112"'
+sql.full <- 'SELECT c FROM c JOIN samples IN c.samples JOIN tests IN samples.tests WHERE tests.parameter.code = "10112"'
 
 # query with filter, limit results
 data <- cosmosQuery(sql.full = sql.full, max.items = 100, content.response = TRUE)
