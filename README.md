@@ -1,33 +1,81 @@
 # cosmosR
 Basic functions in R for simple interactions with a CosmosDB REST API using Document-based storage.
 
-### Cosmos DB Intro
-More information can be found at [Microsoft's website](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction).<br />
-I wrote this specifically for a Cosmos DB using the Document DB protocol via the REST API.
 
-### Getting Started
-First, source the R file to load all functions.
-Next, you'll need the key to a Cosmos DB. If using all my default parameters, follow the steps below to perform "SELECT * FROM c" from the database
+## Installation
+```R 
+install_github('mapic/cosmosR')
+
 ```
-cosmosAuth("KeyGoesHere", "uri", "dbName", "collName")
-list.all.documents <- cosmosQuery(content.response = TRUE)
+## Usage
+
+### Get all documents from CosmosDB
+```R
+# import library
+library(cosmosR)
+
+# authenticate with CosmosDB container
+cosmosAuth("accessKey", "uri", "databaseName", "collectionName")
+
+# get all documents (default: SELECT * FROM c)
+data <- cosmosQuery(content.response = TRUE)
+
+# json prettify results
+result <- jsonlite::prettify(jsonlite::toJSON(data, auto_unbox = TRUE), 4) 
 ```
-This provides a list named list.all.documents which contains the full contents of all documents retrieved, and only the documents. No metadata about the HTTP response is stored.
 
-### Query Target
-As of 10-Jul-2017 the cosmosQuery function accepts basic parameters to target any db and collection in a Cosmos DB to which you have access. No guarantees are made, however, since this feature is new.
+### Query documents from CosmosDB
+```R
+# import library
+library(cosmosR)
 
-### Create Document
+# authenticate with CosmosDB container
+cosmosAuth("accessKey", "uri", "databaseName", "collectionName")
+
+# example query
+sql.full = "SELECT * FROM c"
+
+# example query: note that with more complicated queries, SELECT * is not allowed, so use SELECT c
+sql.full = 'SELECT c FROM c JOIN samples IN c.samples JOIN tests IN samples.tests WHERE tests.parameter.code = "10112"'
+
+# query with filter, limit results
+data <- cosmosQuery(sql.full = sql.full, max.items = 100, content.response = TRUE)
+
+# json prettify results
+result <- jsonlite::prettify(jsonlite::toJSON(data, auto_unbox = TRUE), 4)   
+``` 
+
+### Create Document in CosmosDB
 You can also create a document, by using the `cosmosCreate()` function. 
 (Note that the partition key _value_ is required by CosmosDB both as `value` in argument and as `key=value` in the document.)
-```
+
+```R
+# import library
+library(cosmosR)
+
+# authenticate with "lab-orders" container
 cosmosAuth("KeyGoesHere", "uri", "dbName", "collName")
+
+# list of keys t
 sql_doc <- list(
-    id = "unique-id",
-    code = "code-1"
+    id = "unique-id",       # required
+    code = "code-1",        # required, must also be added to cosmosCreate() below
+    other = "my-value",     # add whatever you want
+    more = "more-values"    # add whatever you want
 )
+
+# create item in CosmosDB
 data <- cosmosCreate(sql.doc = sql_doc, sql.partitionkey_value = "code-1", content.response = TRUE)
 
+# json prettify results
+result <- jsonlite::prettify(jsonlite::toJSON(data, auto_unbox = TRUE), 4) 
+
 ```
-### Custom parameters
-Queries can be constructed and will always SELECT from "c," the full Cosmos DB, at this time. These are built using the constructQuery function.
+
+
+## License
+[MIT License](https://github.com/mapic/cosmosR/blob/master/LICENSE)
+
+Supported by [NGI.no](https://ngi.no).
+
+Based on work by [aaron2012r2](https://github.com/aaron2012r2/cosmosR).
