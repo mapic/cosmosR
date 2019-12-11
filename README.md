@@ -4,6 +4,7 @@ Basic functions in R for simple interactions with a CosmosDB REST API using Docu
 
 ## Installation
 ```R 
+library('devtools')
 install_github('mapic/cosmosR')
 
 ```
